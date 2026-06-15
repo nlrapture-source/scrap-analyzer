@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import json
 import re
+import io
 
 genai.configure(api_key=st.secrets["GEMINI_KEY"])
 
@@ -13,16 +14,25 @@ st.write("AnEvAse mIa fwtografia apo to skrap gia na deis thn katanomh se posost
 uploaded_file = st.file_uploader("Epilogh fwtografias...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-	image = Image.open(uploaded_file)
+	# Άνοιγμα της αρχικής εικόνας
+	raw_image = Image.open(uploaded_file)
 	
-	# --- ΑΥΤΟΜΑΤΗ ΜΕΙΩΣΗ ΑΝΑΛΥΣΗΣ ---
-	# Μικραίνουμε την εικόνα ώστε η μεγαλύτερη πλευρά της να είναι το πολύ 1024 pixels
-	# Αυτό μειώνει το μέγεθος του αρχείου κατακόρυφα χωρίς να χάνεται η απαραίτητη λεπτομέρεια
-	max_size = (1024, 1024)
-	image.thumbnail(max_size, Image.Resampling.LANCZOS)
-	# ---------------------------------
+	# --- ΝΕΑ ΣΚΛΗΡΗ ΣΥΜΠΙΕΣΗ ΚΑΙ ΜΕΙΩΣΗ ΑΝΑΛΥΣΗΣ ---
+	# 1. Μειώνουμε τις διαστάσεις στο μέγιστο 1024px
+	raw_image.thumbnail((1024, 1024), Image.Resampling.LANCZOS)
+	
+	# 2. Τη μετατρέπουμε σε bytes με χαμηλότερη ποιότητα (quality=60) για να πέσει το μέγεθος στα <500KB
+	buffer = io.BytesIO()
+	if raw_image.mode in ("RGBA", "P"):  # Μετατροπή σε RGB αν είναι PNG με διαφάνεια
+		raw_image = raw_image.convert("RGB")
+	raw_image.save(buffer, format="JPEG", quality=60)
+	buffer.seek(0)
+	
+	# Αυτή είναι η νέα, ελαφριά εικόνα που θα χρησιμοποιήσουμε παντού
+	image = Image.open(buffer)
+	# -----------------------------------------------
 
-	st.image(image, caption='H fwtografia sou (Sympiesmenh)', use_column_width=True)
+	st.image(image, caption='H fwtografia sou (Αυτόματα Συμπιεσμένη)', use_column_width=True)
 	st.write("🔄 Analysh swrou... Parakalw perimene...")
 	
 	model = genai.GenerativeModel('gemini-2.0-flash')
