@@ -14,10 +14,20 @@ uploaded_file = st.file_uploader("Epilogh fwtografias...", type=["jpg", "jpeg", 
 
 if uploaded_file is not None:
 	image = Image.open(uploaded_file)
-	st.image(image, caption='H fwtografia sou', use_column_width=True)
+	
+	# --- ΑΥΤΟΜΑΤΗ ΜΕΙΩΣΗ ΑΝΑΛΥΣΗΣ ---
+	# Μικραίνουμε την εικόνα ώστε η μεγαλύτερη πλευρά της να είναι το πολύ 1024 pixels
+	# Αυτό μειώνει το μέγεθος του αρχείου κατακόρυφα χωρίς να χάνεται η απαραίτητη λεπτομέρεια
+	max_size = (1024, 1024)
+	image.thumbnail(max_size, Image.Resampling.LANCZOS)
+	# ---------------------------------
+
+	st.image(image, caption='H fwtografia sou (Sympiesmenh)', use_column_width=True)
 	st.write("🔄 Analysh swrou... Parakalw perimene...")
-	model = genai.GenerativeModel('gemini-2.5-flash')
+	
+	model = genai.GenerativeModel('gemini-2.0-flash')
 	prompt = "Analyze this scrap metal pile. Calculate approximate volume and give percentages (%) for 3 categories: '0-6mm', '6-8mm', '>8mm'. Return ONLY a JSON like this: {'0-6 χιλιοστά': 50, '6-8 χιλιοστά': 30, '8+ χιλιοστά': 20}"
+	
 	try:
 		response = model.generate_content([prompt, image])
 		raw_text = response.text.strip()
