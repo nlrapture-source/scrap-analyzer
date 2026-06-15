@@ -7,10 +7,8 @@ import re
 
 
 # 1. Ρύθμιση του Google Gemini AI (Βάλε το δικό σου API Key)
-API_KEY = "AQ.Ab8RN6Kjcs-D5adLTRC2oWoUzjcAHkLXWVA1vJcwEQWswebKXg" 
-genai.configure(api_key=API_KEY)
 
-
+genai.configure(api_key=st.secrets["GEMINI_KEY"])
 st.title("📊 Scrap Analyzer Pro")
 st.write("Ανέβασε μια φωτογραφία από το σκραπ για να δεις την κατανομή σε ποσοστά.")
 
