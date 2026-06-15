@@ -16,7 +16,7 @@ if uploaded_file is not None:
 	image = Image.open(uploaded_file)
 	st.image(image, caption='H fwtografia sou', use_column_width=True)
 	st.write("🔄 Analysh swrou... Parakalw perimene...")
-	model = genai.GenerativeModel('gemini-1.5-flash')
+	model = genai.GenerativeModel('gemini-2.5-flash')
 	prompt = "Analyze this scrap metal pile. Calculate approximate volume and give percentages (%) for 3 categories: '0-6mm', '6-8mm', '>8mm'. Return ONLY a JSON like this: {'0-6 χιλιοστά': 50, '6-8 χιλιοστά': 30, '8+ χιλιοστά': 20}"
 	try:
 		response = model.generate_content([prompt, image])
