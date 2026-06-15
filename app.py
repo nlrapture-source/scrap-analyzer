@@ -29,8 +29,8 @@ if uploaded_file is not None:
 	st.image(image, caption='Η φωτογραφία σου (Έτοιμη για ανάλυση)', use_column_width=True)
 	st.write("🔄 Ανάλυση σωρού... Παρακαλώ περιμένετε...")
 	
-	# Χρήση του επίσημου τρέχοντος μοντέλου
-	model = genai.GenerativeModel('gemini-2.0-flash')
+	# Χρήση model επίσημου τρέχοντος μοντέλου
+	model = genai.GenerativeModel('gemini-2.5-flash')
 	
 	prompt = """
 	Είσαι ένας έμπειρος εκτιμητής μετάλλων και σκραπ. Αναλύστε αυτή τη φωτογραφία από τον σωρό.
