@@ -30,7 +30,7 @@ if uploaded_file is not None:
 	st.write("🔄 Ανάλυση σωρού... Παρακαλώ περιμένετε...")
 	
 	# Χρήση του μοντέλου που σου δούλεψε
-	model = genai.GenerativeModel('gemini-2.0-flash')
+	model = genai.GenerativeModel('gemini-2.5-flash')
 	
 	# Εδώ αλλάξαμε τις κατηγορίες σε 0-5, 5-8 και 8+
 	prompt = """
